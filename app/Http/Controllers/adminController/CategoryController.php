@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\adminController;
 
 use Illuminate\Http\Request;
-use App\Models\Country;
+use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use App\Http\Controllers\Controller;
 
-class CountryController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +18,8 @@ class CountryController extends Controller
      */
     public function index()
     {
-        $countries = Country::all();
-        return view('admincp.countries.index', compact('countries'));
+        $categories = Category::all();
+        return view('admincp.categories.index', compact('categories'));
     }
 
     /**
@@ -28,7 +29,7 @@ class CountryController extends Controller
      */
     public function create()
     {
-        return view('admincp.countries.create');
+        return view('admincp.categories.create');
     }
 
     /**
@@ -41,14 +42,14 @@ class CountryController extends Controller
     {
         // Validate the request
         $validator = Validator::make($request->all(), [
-            'title' => 'required|string|max:255|unique:countries,title',
+            'title' => 'required|string|max:255|unique:categories,title',
             'description' => 'nullable|string|max:1000',
             'status' => 'required|boolean',
         ], [
-            'title.required' => 'Tên quốc gia không được để trống',
-            'title.string' => 'Tên quốc gia phải là chuỗi ký tự',
-            'title.max' => 'Tên quốc gia không được vượt quá 255 ký tự',
-            'title.unique' => 'Tên quốc gia đã tồn tại',
+            'title.required' => 'Tên danh mục không được để trống',
+            'title.string' => 'Tên danh mục phải là chuỗi ký tự',
+            'title.max' => 'Tên danh mục không được vượt quá 255 ký tự',
+            'title.unique' => 'Tên danh mục đã tồn tại',
             'description.string' => 'Mô tả phải là chuỗi ký tự',
             'description.max' => 'Mô tả không được vượt quá 1000 ký tự',
             'status.required' => 'Trạng thái không được để trống',
@@ -56,38 +57,22 @@ class CountryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->with('error', 'Lỗi: ' . $validator->errors()->first())
+            ->withInput()
+            ->withErrors($validator);
         }
 
-        // Create the country
-        Country::create([
+        // Create the category
+        Category::create([
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title),
             'status' => $request->status
         ]);
 
-        return redirect()->route('countries.index')->with('success', 'Quốc gia đã được thêm thành công');
+        return redirect()->route('categories.index')->with('success', 'Danh mục đã được thêm thành công');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $country = Country::find($id);
-
-        if (!$country) {
-            return redirect()->route('countries.index')->with('error', 'Không tìm thấy quốc gia với ID: ' . $id);
-        }
-
-        return view('admincp.countries.show', compact('country'));
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -97,13 +82,13 @@ class CountryController extends Controller
      */
     public function edit($id)
     {
-        $country = Country::find($id);
+        $category = Category::find($id);
 
-        if (!$country) {
-            return redirect()->route('countries.index')->with('error', 'Không tìm thấy quốc gia với ID: ' . $id);
+        if (!$category) {
+            return redirect()->route('categories.index')->with('error', 'Không tìm thấy danh mục với ID: ' . $id);
         }
 
-        return view('admincp.countries.edit', compact('country'));
+        return view('admincp.categories.update', compact('category'));
     }
 
     /**
@@ -115,11 +100,11 @@ class CountryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Find the country
-        $country = Country::find($id);
+        // Find the category
+        $category = Category::find($id);
 
-        if (!$country) {
-            return redirect()->route('countries.index')->with('error', 'Không tìm thấy quốc gia với ID: ' . $id);
+        if (!$category) {
+            return redirect()->route('categories.index')->with('error', 'Không tìm thấy danh mục với ID: ' . $id);
         }
 
         // Validate the request
@@ -128,15 +113,15 @@ class CountryController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('countries', 'title')->ignore($id),
+                Rule::unique('categories', 'title')->ignore($id),
             ],
             'description' => 'nullable|string|max:1000',
             'status' => 'required|boolean',
         ], [
-            'title.required' => 'Tên quốc gia không được để trống',
-            'title.string' => 'Tên quốc gia phải là chuỗi ký tự',
-            'title.max' => 'Tên quốc gia không được vượt quá 255 ký tự',
-            'title.unique' => 'Tên quốc gia đã tồn tại',
+            'title.required' => 'Tên danh mục không được để trống',
+            'title.string' => 'Tên danh mục phải là chuỗi ký tự',
+            'title.max' => 'Tên danh mục không được vượt quá 255 ký tự',
+            'title.unique' => 'Tên danh mục đã tồn tại',
             'description.string' => 'Mô tả phải là chuỗi ký tự',
             'description.max' => 'Mô tả không được vượt quá 1000 ký tự',
             'status.required' => 'Trạng thái không được để trống',
@@ -144,20 +129,20 @@ class CountryController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()
-                ->withErrors($validator)
-                ->withInput();
+            return redirect()->back()->with('error', 'Lỗi: ' . $validator->errors()->first())
+            ->withInput()
+            ->withErrors($validator);
         }
 
-        // Update the country
-        $country->update([
+        // Update the category
+        $category->update([
             'title' => $request->title,
             'description' => $request->description,
             'slug' => Str::slug($request->title),
             'status' => $request->status
         ]);
 
-        return redirect()->route('countries.index')->with('success', 'Quốc gia đã được cập nhật thành công');
+        return redirect()->route('categories.index')->with('success', 'Danh mục đã được cập nhật thành công');
     }
 
     /**
@@ -169,11 +154,11 @@ class CountryController extends Controller
     public function destroy($id)
     {
         try {
-            $country = Country::findOrFail($id);
-            $country->delete();
-            return redirect()->route('countries.index')->with('success', 'Quốc gia đã được xóa thành công');
+            $category = Category::findOrFail($id);
+            $category->delete();
+            return redirect()->route('categories.index')->with('success', 'Danh mục đã được xóa thành công');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            return redirect()->route('countries.index')->with('error', 'Không tìm thấy quốc gia với ID: ' . $id);
+            return redirect()->route('categories.index')->with('error', 'Không tìm thấy danh mục với ID: ' . $id);
         }
     }
 }

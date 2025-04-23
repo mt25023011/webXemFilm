@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug')->unique();
+            $table->string('flag')->nullable();
             $table->string('description')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();

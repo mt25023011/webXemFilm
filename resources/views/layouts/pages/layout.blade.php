@@ -113,55 +113,40 @@
                             <li class="current-menu-item active"><a title="Trang Chủ"
                                     href="{{ route('home-user') }}">Trang Chủ</a>
                             </li>
-                            <li class="mega"><a title="Phim Mới" href="{{ route('category') }}">Phim Mới</a></li>
-                            {{-- <li class="mega dropdown">
+                            @foreach ($categories->take(4) as $category )
+                                <li class="mega"><a title="{{ $category->title }}"
+                                        href="{{ route('category', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
+                                </li>
+                            @endforeach
+                            <!-- <li class="mega dropdown">
                                 <a title="Năm" href="#" data-toggle="dropdown" class="dropdown-toggle"
                                     aria-haspopup="true">Năm <span class="caret"></span></a>
                                 <ul role="menu" class=" dropdown-menu">
-                                    <li><a title="Phim 2020" href="{{ route('category') }}">Phim 2020</a></li>
-                                    <li><a title="Năm 2019" href="{{ route('category') }}">Năm 2019</a></li>
-                                    <li><a title="Năm 2018" href="{{ route('category') }}">Năm 2018</a></li>
+                                    <li><a title="Phim 2020" href="{{ route('category', ['slug' => 'phim-2020']) }}">Phim 2020</a></li>
+                                    <li><a title="Năm 2019" href="{{ route('category', ['slug' => 'phim-2019']) }}">Năm 2019</a></li>
+                                    <li><a title="Năm 2018" href="{{ route('category', ['slug' => 'phim-2018']) }}">Năm 2018</a></li>
                                 </ul>
-                            </li> --}}
+                            </li>  -->
                             <li class="mega dropdown">
                                 <a title="Thể Loại" href="#" data-toggle="dropdown" class="dropdown-toggle"
                                     aria-haspopup="true">Thể Loại <span class="caret"></span></a>
                                 <ul role="menu" class=" dropdown-menu">
-                                    <li><a title="Tâm Lý" href="{{ route('genre') }}">Tâm Lý</a></li>
-                                    <li><a title="Hành động" href="">Hành động</a></li>
-                                    <li><a title="Viễn Tưởng" href="">Viễn Tưởng</a></li>
-                                    <li><a title="Hoạt Hình" href="{{ route('genre') }}">Hoạt Hình</a></li>
-                                    <li><a title="Kinh Dị" href="{{ route('genre') }}">Kinh Dị</a></li>
-                                    <li><a title="Hài Hước" href="{{ route('genre') }}">Hài Hước</a></li>
-                                    <li><a title="Hình Sự" href="{{ route('genre') }}">Hình Sự</a></li>
-                                    <li><a title="Võ Thuật" href="{{ route('genre') }}">Võ Thuật</a></li>
-                                    <li><a title="Cổ Trang" href="{{ route('genre') }}">Cổ Trang</a></li>
-                                    <li><a title="Phim Ma" href="{{ route('genre') }}">Phim Ma</a></li>
-                                    <li><a title="Tình Cảm" href="{{ route('genre') }}">Tình Cảm</a></li>
-                                    <li><a title="Thể Thao - Âm Nhạc" href="{{ route('genre') }}">Thể Thao &#8211;
-                                            Âm Nhạc</a>
-                                    </li>
-                                    <li><a title="Thần Thoại" href="{{ route('genre') }}">Thần Thoại</a></li>
-                                    <li><a title="Tài Liệu" href="{{ route('genre') }}">Tài Liệu</a></li>
-                                    <li><a title="Phiêu Lưu" href="{{ route('genre') }}">Phiêu Lưu</a></li>
-                                    <li><a title="Gia Đình" href="{{ route('genre') }}">Gia Đình</a></li>
-                                    <li><a title="Chiến Tranh" href="{{ route('genre') }}">Chiến Tranh</a></li>
+                                    @foreach ($genres as $genre)
+                                        <li><a title="{{ $genre->title }}"
+                                                href="{{ route('genre', ['slug' => $genre->slug]) }}">{{ $genre->title }}</a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </li>
                             <li class="mega dropdown">
                                 <a title="Quốc Gia" href="#" data-toggle="dropdown" class="dropdown-toggle"
                                     aria-haspopup="true">Quốc Gia <span class="caret"></span></a>
                                 <ul role="menu" class=" dropdown-menu">
-                                    <li><a title="Việt nam" href="{{ route('country') }}">Việt nam</a></li>
-                                    <li><a title="Ấn Độ" href="{{ route('country') }}">Ấn Độ</a></li>
-                                    <li><a title="Mỹ" href="{{ route('country') }}">Mỹ</a></li>
-                                    <li><a title="Hồng Kông" href="{{ route('country') }}">Hồng Kông</a></li>
-                                    <li><a title="Nhật Bản" href="{{ route('country') }}">Nhật Bản</a></li>
-                                    <li><a title="Trung Quốc" href="{{ route('country') }}">Trung Quốc</a></li>
-                                    <li><a title="Hàn Quốc" href="{{ route('country') }}">Hàn Quốc</a></li>
-                                    <li><a title="Đài Loan" href="{{ route('country') }}">Đài Loan</a></li>
-                                    <li><a title="Thái Lan" href="{{ route('country') }}">Thái Lan</a></li>
-                                    <li><a title="Philippin" href="{{ route('country') }}">Philippin</a></li>
+                                    @foreach ($countries as $country)
+                                        <li><a title="{{ $country->title }}"
+                                                href="{{ route('country', ['slug' => $country->slug]) }}">{{ $country->title }}</a>
+                                        </li>
+                                    @endforeach
                                 </ul>
                             </li>
                         </ul>
